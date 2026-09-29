@@ -11,14 +11,17 @@ int main() {
     
     int swaps = 0;
     for (int i = 0; i < n - 1; i++) {
+    	int f1=0;
         for (int j = 0; j < n - i - 1; j++) {
             if (A[j] > A[j + 1]) {
                 int x = A[j];
                 A[j] = A[j + 1];
                 A[j + 1] = x;
                 swaps++;
+                f1++;
             }
         }
+        if (f1!)break;
     }
     
     cout << swaps << endl;
