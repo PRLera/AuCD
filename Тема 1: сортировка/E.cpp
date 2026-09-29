@@ -1,73 +1,79 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
-// Функция слияния двух отсортированных частей
-void merge(int A[], int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-    
-    // Создаём временные массивы
-    int* L = new int[n1];
-    int* R = new int[n2];
-    
-    // Копируем данные во временные массивы
-    for (int i = 0; i < n1; i++)
-        L[i] = A[left + i];
-    for (int j = 0; j < n2; j++)
-        R[j] = A[mid + 1 + j];
-    
-    // Сливаем временные массивы обратно в A
-    int i = 0, j = 0, k = left;
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            A[k] = L[i];
-            i++;
-        } else {
-            A[k] = R[j];
-            j++;
-        }
-        k++;
-    }
-    
-    // Копируем оставшиеся элементы
-    while (i < n1) {
-        A[k] = L[i];
-        i++;
-        k++;
-    }
-    while (j < n2) {
-        A[k] = R[j];
-        j++;
-        k++;
-    }
-    
-    delete[] L;
-    delete[] R;
+void SlyianiePodmassiv(vector<int>& A, int left, int mid, int right) {
+    //index levogo i pravovo massivov
+	int lft = left;
+    int rht = mid;
+    // dlina levovo i pravovo massivov
+    int razmer_rht = right - mid+1;
+    int razmer_lft = mid-left;
+	// delaem copii massivov
+	vector<int> left_copy(razmer_lft), right_copy(razmer_rht);
+	for (int i=0; i<razmer_lft;i++ ){
+		left_copy[i] = A[lft + i];
+	}
+	for (int j = 0; j < razmer_rht; j++){
+		right_copy[j]= A[rht + j];
+	}
+	//soedin massivi v odin
+	int i = 0;
+	int j = 0;
+	int ind = left;
+// sravnivaem el mezdu copiamy pravovo i levovo massivov i otsortirovaniy el zasovivaem v original massiv
+	while (i < razmer_lft and j < razmer_rht){
+		if(left_copy[i] <= right_copy[j]){
+			A[ind] = left_copy[i];
+			i++;
+		}
+		else{
+			A[ind] = right_copy[j];
+			j++;
+		}
+		ind++;
+	}
+	//kopir ost elementi (esli kakoito iz podmassivov bolshe ili v kakom-to iz massivov bolshe min el, to ostav otsort chast zasovivaem v konec)
+	while (i < razmer_lft){
+		A[ind] = left_copy[i];
+		i++;
+		ind++;
+	}
+	
+	while (j < razmer_rht){
+		A[ind] = right_copy[j];
+		j++;
+		ind++;
+	}	
 }
-
-// Функция сортировки слиянием
-void mergeSort(int A[], int left, int right) {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-        mergeSort(A, left, mid);
-        mergeSort(A, mid + 1, right);
-        merge(A, left, mid, right);
-    }
+//sortirivka sliania
+void SlianieSort(vector<int>& A, int left, int right){
+	if (left < right){
+		//seredina tekuschevo otrezka
+		int mid = left + (right-left)/2+1;
+		//rekursivno sortiruem 1 i 2 polovini
+		SlianieSort(A, left, mid-1);
+		SlianieSort(A, mid, right);
+		//soediniaem polovini
+		SlyianiePodmassiv(A, left, mid, right);
+	}
 }
-
 int main() {
     int n;
     cin >> n;
-    int* A = new int[n];
     
-    for (int i = 0; i < n; i++)
+    vector<int> A(n);
+    for (int i = 0; i < n; i++) {
         cin >> A[i];
+    }
     
-    mergeSort(A, 0, n - 1);
+    SlianieSort(A, 0, n - 1);
     
-    for (int i = 0; i < n; i++)
-        cout << A[i] << " ";
+    for (int i = 0; i < n; i++) {
+        if (i > 0) cout << " ";
+        cout << A[i];
+    }
+    cout << endl;
     
-    delete[] A;
     return 0;
 }
