@@ -1,38 +1,55 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-void CountSort(int A[], int n) {
-    int count[101] = {0};
-    
-    for (int i = 0; i < n; i++) {
-        count[A[i]]++;
-    }
-    
-    int index = 0;
-    for (int num = 0; num <= 100; num++) {
-        for (int j = 0; j < count[num]; j++) {
-            A[index] = num;
-            index++;
-        }
-    }
+int Maxchislo(vector<int>& A){
+	int mx = A[0];
+	for (int i=0; i<A.size(); i++){
+		if (A[i] > mx){
+			mx = A[i];	
+		}
+	}
+	return mx;
 }
 
+vector <int> Podschet(vector<int>& A){
+	int mx = Maxchislo(A);
+	vector<int> C(mx+1, 0);
+	for (int i = 0; i < A.size(); i++){
+		C[A[i]] += 1;	
+	}
+	return C;
+}
+
+void Sort(vector<int>& A){
+	vector<int> C = Podschet(A);
+	//pozicia v massive A
+	int ind = 0;
+	for(int i=0; i<C.size(); i++){ //perebor znachenyi
+		for(int j=0; j<C[i]; j++){ //povtoriaem znachenia C[i] raz
+			A[ind] = i;
+			ind++;
+		}
+	}
+}
+
+
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
+	
+    vector<int> A;
+    int x;
     
-    int A[200000];
-    int n = 0;
-    
-    while (cin >> A[n]) {
-        n++;
+	while (cin >> x) {
+        A.push_back(x);
     }
     
-    CountSort(A, n);
+   	Sort(A);
     
-    for (int i = 0; i < n; i++) {
-        cout << A[i] << " ";
+    for (int i = 0; i < A.size(); i++) {
+        cout << A[i]<<" ";
     }
-    
-    return 0;
+    cout << "\n";
+		
+	return 0;
 }
