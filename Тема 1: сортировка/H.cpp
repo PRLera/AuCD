@@ -1,38 +1,41 @@
 #include <iostream>
+#include <cmath>
 using namespace std;
 
-void CountSort(int A[], int n) {
-    int count[101] = {0};
-    
-    for (int i = 0; i < n; i++) {
-        count[A[i]]++;
-    }
-    
-    int index = 0;
-    for (int num = 0; num <= 100; num++) {
-        for (int j = 0; j < count[num]; j++) {
-            A[index] = num;
-            index++;
+struct Point {
+    int x, y;
+};
+
+double distance(Point p) {
+    return sqrt(p.x * p.x + p.y * p.y);
+}
+
+void BubbleSort(Point A[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (distance(A[j]) > distance(A[j + 1])) {
+                Point temp = A[j];
+                A[j] = A[j + 1];
+                A[j + 1] = temp;
+            }
         }
     }
 }
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
+    int n;
+    cin >> n;
     
-    int A[200000];
-    int n = 0;
-    
-    while (cin >> A[n]) {
-        n++;
+    Point* A = new Point[n];
+    for (int i = 0; i < n; i++) {
+        cin >> A[i].x >> A[i].y;
     }
     
-    CountSort(A, n);
+    BubbleSort(A, n);
     
     for (int i = 0; i < n; i++) {
-        cout << A[i] << " ";
+        cout << A[i].x << " " << A[i].y << endl;
     }
     
+    delete[] A;
     return 0;
-}
