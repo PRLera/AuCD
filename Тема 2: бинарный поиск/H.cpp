@@ -10,9 +10,9 @@ int main() {
     long long right = max(w, h) * n;       // максимальный размер (худший случай)
     
     while (left < right) {
-        long long mid = (left + right) / 2;  // угадываем размер
+        long long mid = (left + right) / 2; 
         
-        // Сколько дипломов поместится на доске mid × mid?
+        // Сколько дипломов поместится на доске mid × mid
         long long count = (mid / w) * (mid / h);
         
         if (count >= n) {
