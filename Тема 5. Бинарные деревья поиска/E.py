@@ -29,7 +29,7 @@ def solve():
                         break
                     curr = curr[2]
 
-    # Итеративный in-order обход
+    
     result = []
     stack = []
     curr = root
